@@ -1,7 +1,29 @@
-import { ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,TextInput} from 'react-native'
-import React from 'react'
+import { ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,TextInput, Alert} from 'react-native'
+import React, { useState } from 'react'
 import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme'
+import axios from 'axios';
+import { API_LOGIN } from '../../config/apiConfig';
+
+
 const SignInScreen = ({navigation} : any) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(`${API_LOGIN}`, {
+        email,
+        password,
+      });
+     
+      
+
+      Alert.alert('Success', 'Login successful.');
+      navigation.navigate('HomeStack')
+    } catch (error) {
+      console.log(error)
+  };
+}
   return (
     <SafeAreaView style={{backgroundColor:COLORS.primaryWhiteHex}}>
       <View style={styles.container}>
@@ -11,20 +33,18 @@ const SignInScreen = ({navigation} : any) => {
         </View>
 
         <View style={styles.input}>
-          <TextInput placeholder='Email' style={styles.textInput} />
-          <TextInput placeholder='Password' style={styles.textInput} />
+          <TextInput placeholder='Email' style={styles.textInput} value={email} onChangeText={setEmail} />
+          <TextInput placeholder='Password' style={styles.textInput} value={password} onChangeText={setPassword} secureTextEntry={true} />
         </View>
 
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity >
           <Text style={styles.text3}>Forgot Your Password ?</Text>
           </TouchableOpacity>
           
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={() => {
-          navigation.navigate('Home');
-        }}>
+        <TouchableOpacity style={styles.button} onPress={handleLogin} >
           <Text style={styles.textButton}>Sign in</Text>
         </TouchableOpacity>
 

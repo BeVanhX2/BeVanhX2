@@ -1,10 +1,35 @@
-import { ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,TextInput} from 'react-native'
-import React from 'react'
+import { ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View ,TextInput, Alert, ScrollView} from 'react-native'
+import React, { useState } from 'react'
 import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme'
+import axios from 'axios'
+import { API_REGISTER } from '../../config/apiConfig'
 
 const SignUpScreen = ({navigation} : any) => {
+
+  const [username,setUsername] = useState('')
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
+  const [numberphone,setNumberphone] = useState('')
+  const [role,setRole] = useState('')
+
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post(`${API_REGISTER}`, {
+        username,
+        email,
+        password,
+        numberphone,
+        role,
+      });
+
+      Alert.alert('Success', response.data.message);
+      navigation.navigate('SignIn')
+    } catch (error) {
+      console.log(error)
+    }
+  };
   return (
-    <SafeAreaView style={{backgroundColor:COLORS.primaryWhiteHex}}>
+    <ScrollView style={{backgroundColor:COLORS.primaryWhiteHex}}>
     <View style={styles.container}>
       <View>
         <Text style={styles.text1}>Create Account</Text>
@@ -12,14 +37,14 @@ const SignUpScreen = ({navigation} : any) => {
       </View>
 
       <View style={styles.input}>
-        <TextInput placeholder='Email' style={styles.textInput} />
-        <TextInput placeholder='Password' style={styles.textInput} />
-        <TextInput placeholder='Confirm Password' style={styles.textInput} />
+        <TextInput placeholder='Username' style={styles.textInput} value={username} onChangeText={setUsername} />
+        <TextInput placeholder='Email' style={styles.textInput} value={email} onChangeText={setEmail} />
+        <TextInput placeholder='Password' style={styles.textInput} value={password} onChangeText={setPassword} secureTextEntry={true} />
+        <TextInput placeholder='Numberphone' style={styles.textInput} value={numberphone} onChangeText={setNumberphone} secureTextEntry={true} />
+        <TextInput placeholder='Role' style={styles.textInput} value={role} onChangeText={setRole} />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={() => {
-        navigation.navigate('SignIn');
-      }}>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.textButton}>Sign up</Text>
       </TouchableOpacity>
 
@@ -47,7 +72,7 @@ const SignUpScreen = ({navigation} : any) => {
       </View>
       </View>
     </View>
-  </SafeAreaView>
+  </ScrollView>
   )
 }
 

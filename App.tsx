@@ -6,8 +6,15 @@ import SplashScreen from './src/screens/SplashScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import TabNavigation from './src/navigator/TabNavigation';
+import DetailScreen from './src/screens/DetailScreen';
+import BookingScreen from './src/screens/BookingScreen';
+import InfomationScreen from './src/screens/InfomationScreen';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
+
+
 const App = () => {
   return (
     <NavigationContainer>
@@ -15,7 +22,10 @@ const App = () => {
         <Stack.Screen name='Splash' component={SplashScreen}></Stack.Screen>
         <Stack.Screen name='SignIn' component={SignInScreen}></Stack.Screen>
         <Stack.Screen name='SignUp' component={SignUpScreen}></Stack.Screen>
-        <Stack.Screen name='Home' component={HomeScreen}></Stack.Screen>
+        <Stack.Screen name='HomeStack' component={TabNavigation}></Stack.Screen>
+        <Stack.Screen name='Detail' component={DetailScreen}></Stack.Screen>
+        <Stack.Screen name='Booking' component={BookingScreen}></Stack.Screen>
+        <Stack.Screen name='Info' component={InfomationScreen}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   )
