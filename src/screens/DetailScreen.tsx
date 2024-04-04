@@ -9,7 +9,7 @@ interface Restaurant {
     name: string;
     description: string;
     address: string;
-    numberPhone: string;
+    numberphone: string;
     rating: number;
     closingTime: string;
     openingTime: string;
@@ -41,7 +41,7 @@ const DetailScreen:React.FC<{route : any}> = ({route}) => {
     <View style={styles.detailsContainer}>
       <Text style={styles.textRestaurant}>{restaurant.name} - {restaurant.address}    </Text>
         
-     <Text style={styles.textPhone}>Hotline : {restaurant.numberPhone} <Text style={styles.textClock}> <Clock size={20} color={COLORS.primaryBlackHex} fontFamily={FONTFAMILY.poppins_semibold} /> {restaurant.openingTime} - {restaurant.closingTime}</Text></Text>
+     <Text style={styles.textPhone}>Hotline : {restaurant.numberphone} <Text style={styles.textClock}> <Clock size={20} color={COLORS.primaryBlackHex} fontFamily={FONTFAMILY.poppins_semibold} /> {restaurant.openingTime} - {restaurant.closingTime}</Text></Text>
 
       <Text style={styles.textDescription}>{restaurant.description}</Text>
       

@@ -3,26 +3,38 @@ import React, { useState } from 'react'
 import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme'
 import axios from 'axios';
 import { API_LOGIN } from '../../config/apiConfig';
-
+import  AsyncStorage  from '@react-native-async-storage/async-storage';
 
 const SignInScreen = ({navigation} : any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [role,setRole] = useState('');
   const handleLogin = async () => {
     try {
       const response = await axios.post(`${API_LOGIN}`, {
-        email,
-        password,
+        email: email,
+        password : password,
       });
-     
-      
 
+      
       Alert.alert('Success', 'Login successful.');
-      navigation.navigate('HomeStack')
+      navigation.replace('HomeStack')
+      console.log(response.data);
+     
+
+      
     } catch (error) {
       console.log(error)
   };
+}
+
+const storeAuthInfo = async({value}: any) => {
+  try {
+    const authInfo = JSON.stringify(value);
+    await AsyncStorage.setItem('authInfo',authInfo);
+  } catch (error) {
+    console.log(error);
+  }
 }
   return (
     <SafeAreaView style={{backgroundColor:COLORS.primaryWhiteHex}}>
