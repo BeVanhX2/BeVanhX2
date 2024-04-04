@@ -1,15 +1,45 @@
-import { InputAccessoryView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, InputAccessoryView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme';
 import { Back } from 'iconsax-react-native';
+import axios from 'axios';
+import { API_BOOKING } from '../../config/apiConfig';
+import DatePicker from 'react-native-date-picker';
+import { da } from 'date-fns/locale';
 
 
 const BookingScreen = ({navigation} : any) => {
+  const [username, setUsername] = useState('');
+  const [restaurant,SetRestaurant] = useState('');
+  const [numberphone, setNumberphone] = useState('');
+  const [quantity, setQuantity] = useState('');
+  // const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [message, setMessage] = useState('');
 
+
+  const handleBooking = async () => {
+    try {
+      await axios.post(API_BOOKING, {
+        username,
+        numberphone,
+        quantity,
+        // date: new Date(date),
+        time,
+        restaurant
+      });
+      Alert.alert('Success!','Đặt bàn thành công!');
+      navigation.navigate('Booking');
+    } catch (error) {
+      setMessage('Đặt bàn không thành công. Vui lòng thử lại sau.');
+      console.error('Error booking:', error);
+    }
+  };
   const handleBackPress = () => {
     navigation.goBack();
 }
+  
 
   return (
     
@@ -23,29 +53,33 @@ const BookingScreen = ({navigation} : any) => {
       </View>
 
       <View style={styles.input}>
+        <Text style={styles.title}> Nhà hàng : </Text>
+        <TextInput placeholder='Nhà hàng' style={styles.textInput} value={restaurant} onChangeText={SetRestaurant}/>
         <Text style={styles.title}>Họ tên : </Text>
-        <TextInput placeholder='Họ và tên' style={styles.textInput} keyboardType='name-phone-pad' />
+        <TextInput placeholder='Họ và tên' style={styles.textInput} value={username} onChangeText={setUsername} />
         <Text style={styles.title}>SĐT : </Text>
-        <TextInput placeholder='Số điện thoại' style={styles.textInput} keyboardType='phone-pad'  />
-        <Text style={styles.title}>Email : </Text>
-        <TextInput placeholder='Email' style={styles.textInput}  secureTextEntry={true} keyboardType='email-address' />
+        <TextInput placeholder='Số điện thoại' style={styles.textInput} value={numberphone} keyboardType='phone-pad' onChangeText={setNumberphone} />
         <Text style={styles.title}>Số lượng người : </Text>
-        <TextInput placeholder='Số lượng người' style={styles.textInput}  keyboardType='phone-pad'/>
-        <Text style={styles.title}>Ngày : </Text>
-        <TextInput placeholder='Ngày' style={styles.textInput} keyboardType='phone-pad'  />
+        <TextInput placeholder='Số lượng người' style={styles.textInput}  keyboardType='phone-pad'value={quantity} onChangeText={setQuantity}/>
+        {/* <Text style={styles.title}>Ngày : </Text>
+        <TextInput placeholder='Ngày' style={styles.textInput}  keyboardType='numeric'value={date} onChangeText={setDate}/> */}
         <Text style={styles.title}>Giờ : </Text>
-        <TextInput placeholder='Giờ' style={styles.textInput}  keyboardType='phone-pad' />
+        <TextInput placeholder='Giờ' style={styles.textInput}  keyboardType='phone-pad'value={time} onChangeText={setTime}/>
+        
+        
+        
+        
+        
 
         
       </View>
 
       
 
-      <TouchableOpacity style={styles.button} >
+      <TouchableOpacity style={styles.button} onPress={handleBooking}>
         <Text style={styles.textButton}>Book now</Text>
       </TouchableOpacity>
 
-      
       </View>
   </ScrollView>
   )

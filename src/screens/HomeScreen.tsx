@@ -24,7 +24,7 @@ const HomeScreen = ({navigation} : any) => {
 
       <View>
 
-        <RestaurantCard />
+        <RestaurantCard  />
       </View>
     </View>
   )

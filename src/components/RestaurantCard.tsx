@@ -13,7 +13,7 @@ interface Restaurant {
     name: string;
     description: string;
     address: string;
-    numberPhone: number;
+    numberphone: number;
     rating: number;
     closingTime: string,
     openingTime: string,
@@ -57,7 +57,7 @@ const RestaurantCard: React.FC = () => {
                 <View style={styles.detailsContainer}>
                   <Text style={styles.restaurantName}>{restaurant.name}</Text>
                   <Text style={styles.restaurantAddress}>{restaurant.address}</Text>
-                  <Text style={styles.restaurantNumberphone}>Hotline: {restaurant.numberPhone}</Text>
+                  <Text style={styles.restaurantNumberphone}>Hotline: {restaurant.numberphone}</Text>
                   
                   <Text style={styles.restaurantOpeningTime}>{restaurant.openingTime} - {restaurant.closingTime}</Text>
                   <Text style={styles.restaurantRating}><Like1 size={25} color='blue' />({restaurant.rating})</Text>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         paddingHorizontal: 20,
-        height:1000,
+        height:2000,
         
       },
       restaurantItem: {

@@ -1,9 +1,54 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme'
 import { Heart, Logout, User } from 'iconsax-react-native'
+import axios from 'axios'
+import { useNavigation } from '@react-navigation/native'
+import InfomationScreen from './InfomationScreen'
+import { API_GETALLUSER, API_GETUSER } from '../../config/apiConfig'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const Profile = ({navigation} : any) => {
+interface User {
+    id: string;
+    username: string;
+    email: string;
+    password: string;
+    numberphone: string;
+    role: string;
+  }
+
+const Profile:React.FC = ({navigation} : any) => {
+    const [users, setUsers] = useState<User[]>([]);
+    const [authInfo, setAuthInfo] = useState();
+    // const navigation = useNavigation();
+
+       // Funtion lấy data login từ AsyncStorage
+       const retrieveData = async () => {
+        try {
+            const authInfo = await AsyncStorage.getItem('authInfo');
+            if (authInfo !== null) {
+                console.log('====> authInfo from AsyncStorage', authInfo);
+                setAuthInfo(JSON.parse(authInfo));
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+       
+        retrieveData();
+        fetchUser();
+      }, []);
+      const fetchUser = async () => {
+        try {
+          const response = await axios.get(API_GETALLUSER);
+          setUsers(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      
+
   return (
     <View style={styles.screenContainer}>
     <View>
@@ -12,7 +57,14 @@ const Profile = ({navigation} : any) => {
 
   <View style={styles.profileIContainer}>
       <Image style={styles.profileImg} source={{uri : 'https://cdn.khgames.co.kr/news/photo/202205/200697_201274_2723.png'}} />
-      <Text style={styles.nameText}>Ngô Tuấn Anh</Text>
+      {users.map((user) => (
+        <View>
+            <Text style={styles.nameText}>{user.username}</Text>
+            {/* <Text style={styles.nameText}>{user.email}</Text> */}
+        </View>
+        
+      ))}
+      
 
       <View style={styles.menuContainer}>
       <TouchableOpacity>
@@ -50,6 +102,7 @@ const Profile = ({navigation} : any) => {
 
   
   </View>
+
   )
 }
 
@@ -83,7 +136,8 @@ profileImg : {
 nameText : {
     fontFamily :FONTFAMILY.poppins_semibold,
     color:COLORS.primaryBlackHex,
-    fontSize : FONTSIZE.size_24
+    fontSize : FONTSIZE.size_24,
+    textAlign:'center',
 },
 menuContainer :{
     marginTop : SPACING.space_20,
